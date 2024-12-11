@@ -10,6 +10,11 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r binder/requirements.txt
-      - name: Build draft PDF
+      - name: Build draft html
         run: |
           jupyter-book build ./content --builder singlehtml
+      - name: Archive results
+        uses: actions/upload-artifact@v4
+        with:
+          name: singlehtml
+          path: content/_build
