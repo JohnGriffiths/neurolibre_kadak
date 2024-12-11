@@ -7,6 +7,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          pip install -r binder/requirements.txt
       - name: Build draft PDF
         run: |
           jupyter-book build content/index.ipynb --builder singlehtml
