@@ -12,4 +12,4 @@ jobs:
           pip install -r binder/requirements.txt
       - name: Build draft PDF
         run: |
-          jupyter-book build content/index.ipynb --builder singlehtml
+          jupyter-book build ./content --builder singlehtml
