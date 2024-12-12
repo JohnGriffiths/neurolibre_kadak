@@ -1,27 +1,33 @@
-on: [push]
-                                                                                                                                                                                                                                             mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+on:
+  push:
+    branches: [ main, dev, 'dev/*' ]
+  pull_request:
+    branches: [ main, dev ]
+    
 jobs:
-  paper:
+  build:
     runs-on: ubuntu-latest
-    name: Paper Draft
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install dependencies
-        run: |
-          pip install -r binder/requirements.txt
-      - name: Build draft html
-        run: |
-          jupyter-book build ./content --builder singlehtml
-      - name: Archive results
-        uses: actions/upload-artifact@v4
-        with:
-          name: singlehtml
-          path: content/_build
-      - name: Deploy to gh-pages 
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: content/_build/html
- 
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        pip install -r binder/requirements.txt
+    - name: Build draft html
+      run: |
+        jupyter-book build ./content --builder singlehtml        
+    - name: Archive results
+      uses: actions/upload-artifact@v4
+      with:
+        name: singlehtml
+        path: content/_build
+    - name: Deploy 
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: content/_build/html
