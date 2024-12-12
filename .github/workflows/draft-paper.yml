@@ -20,14 +20,14 @@ jobs:
     - name: Build draft html
       run: |
         jupyter-book build ./content --builder singlehtml        
-    - name: Archive results
-      uses: actions/upload-artifact@v4
-      with:
-        name: singlehtml
-        path: content/_build
     - name: Deploy 
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: content/_build/html
+    - name: Archive results
+      uses: actions/upload-artifact@v4
+      with:
+        name: singlehtml
+        path: content/_build
